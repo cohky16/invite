@@ -12,10 +12,12 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
+	if os.Getenv("APP_ENV") != "production" {
+		err := godotenv.Load()
 
-	if err != nil {
-		log.Println("heroku")
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	token := os.Getenv("DISCORD_TOKEN")
