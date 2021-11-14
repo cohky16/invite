@@ -1,1 +1,1 @@
-worker: invite
+worker: ./bin/invite
