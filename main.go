@@ -80,14 +80,14 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 
-		if checkRegexp("Talk", c.Name) {
-			err := sendMessage(s, m, c, "talk")
+		if checkRegexp("talk", c.Name) {
+			err := sendMessage(s, m, c, "Talk")
 
 			if err != nil {
 				return
 			}
-		} else if checkRegexp("Meeting", c.Name) {
-			err := sendMessage(s, m, c, "meeting")
+		} else if checkRegexp("meeting", c.Name) {
+			err := sendMessage(s, m, c, "Meeting")
 
 			if err != nil {
 				return
