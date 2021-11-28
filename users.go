@@ -3,27 +3,29 @@ package main
 import "github.com/bwmarrin/discordgo"
 
 type Users struct {
-	users             string
-	channels          []*discordgo.Channel
-	alreadyChannelIds []string
+	Users             string
+	Channels          []*discordgo.Channel
+	AlreadyChannelIds []string
 }
 
 func makeUsers(s *discordgo.Session, m *discordgo.MessageCreate, c *discordgo.Channel) (Users, error) {
 	var users Users
 
 	for _, user := range m.Mentions {
-		users.users += user.Mention() + " "
+		users.Users += user.Mention() + " "
 	}
 
-	channels, err := s.GuildChannels(c.GuildID)
+	session := newSession(s, m)
+
+	channels, err := session.GuildChannels(c.GuildID)
 
 	if err != nil {
 		return users, err
 	}
 
-	users.channels = channels
+	users.Channels = channels
 
-	members, err := s.GuildMembers(m.GuildID, "", 1000)
+	members, err := session.GuildMembers(m.GuildID, "", 1000)
 
 	if err != nil {
 		return users, err
@@ -36,7 +38,7 @@ func makeUsers(s *discordgo.Session, m *discordgo.MessageCreate, c *discordgo.Ch
 			continue
 		}
 
-		users.alreadyChannelIds = append(users.alreadyChannelIds, state.ChannelID)
+		users.AlreadyChannelIds = append(users.AlreadyChannelIds, state.ChannelID)
 	}
 
 	return users, nil
