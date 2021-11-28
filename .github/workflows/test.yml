@@ -14,5 +14,3 @@ jobs:
                 go-version: 1.17
         - name: Run Test
             run: go test .
-
-
