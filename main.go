@@ -1,6 +1,7 @@
 package main
 
 import (
+	main_test "invite/mock"
 	"log"
 	"os"
 	"os/signal"
@@ -10,6 +11,16 @@ import (
 	"github.com/joho/godotenv"
 )
 
+type Session interface {
+	ChannelMessageSendEmbed(channelID string, embed *discordgo.MessageEmbed) (*discordgo.Message, error)
+	GuildChannels(guildID string) (st []*discordgo.Channel, err error)
+	GuildMembers(guildID string, after string, limit int) (st []*discordgo.Member, err error)
+	Channel(channelID string) (st *discordgo.Channel, err error)
+
+	ChannelInviteCreate(channelID string, i discordgo.Invite) (st *discordgo.Invite, err error)
+	ChannelMessageSend(channelID string, content string) (*discordgo.Message, error)
+}
+
 func main() {
 	token, err := getToken()
 
@@ -17,7 +28,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	dg, err := openDg(token)
+	dg, err := newDg(token)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = openDg(dg)
 
 	if err != nil {
 		log.Fatal(err)
@@ -54,20 +71,32 @@ func getToken() (token string, err error) {
 	return
 }
 
-func openDg(token string) (dg *discordgo.Session, err error) {
+func newDg(token string) (dg *discordgo.Session, err error) {
 	dg, err = discordgo.New("Bot " + token)
 
 	if err != nil {
 		return nil, err
 	}
 
+	return
+}
+
+func openDg(dg *discordgo.Session) (err error) {
 	dg.AddHandler(onMessageCreate)
 
 	err = dg.Open()
 
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	return
+}
+
+func newSession(s *discordgo.Session, m *discordgo.MessageCreate) Session {
+	if m.Author.Bot {
+		var mockSession main_test.MockSession
+		return mockSession
+	}
+	return s
 }

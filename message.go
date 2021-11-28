@@ -1,6 +1,8 @@
 package main
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"github.com/bwmarrin/discordgo"
+)
 
 func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.Bot {
@@ -28,13 +30,17 @@ func onHelp(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
 		Footer:      &footer,
 	}
 
-	_, err = s.ChannelMessageSendEmbed(m.ChannelID, &embed)
+	session := newSession(s, m)
+
+	_, err = session.ChannelMessageSendEmbed(m.ChannelID, &embed)
 
 	return
 }
 
 func onInvite(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
-	c, err := s.Channel(m.ChannelID)
+	session := newSession(s, m)
+
+	c, err := session.Channel(m.ChannelID)
 
 	if err != nil {
 		return
@@ -56,31 +62,35 @@ func onInvite(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
 }
 
 func sendMessage(s *discordgo.Session, m *discordgo.MessageCreate, c *discordgo.Channel, r string) error {
-
 	users, err := makeUsers(s, m, c)
 
 	if err != nil {
 		return err
 	}
 
-	for _, channel := range users.channels {
+	session := newSession(s, m)
+
+	for _, channel := range users.Channels {
 		count := 0
 
-		for _, alreadyChannelId := range users.alreadyChannelIds {
+		for _, alreadyChannelId := range users.AlreadyChannelIds {
 			if alreadyChannelId == channel.ID {
 				count++
 			}
 		}
 
 		if count < 2 && channel.Type == 2 && checkRegexp(r, channel.Name) {
-			st, err := s.ChannelInviteCreate(channel.ID, discordgo.Invite{})
+			st, err := session.ChannelInviteCreate(channel.ID, discordgo.Invite{})
 
 			if err != nil {
 				return err
 			}
 
-			s.ChannelMessageSend(m.ChannelID, users.users+"\nボイスチャンネルに招待されました\n"+"https://discord.gg/"+st.Code)
+			ms, err := session.ChannelMessageSend(m.ChannelID, users.Users+"\nボイスチャンネルに招待されました\n"+"https://discord.gg/"+st.Code)
 
+			if err != nil || ms == nil {
+				return err
+			}
 			break
 		}
 	}

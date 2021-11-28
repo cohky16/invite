@@ -2,14 +2,12 @@ package main
 
 import "testing"
 
-type Regexp struct {
-	arg    string
-	match  string
-	result bool
-}
-
 func TestCheckRegexp(t *testing.T) {
-	tests := []Regexp{
+	tests := []struct {
+		Regexp string
+		Arg    string
+		Exp    bool
+	}{
 		{"talk", "talk-request", true},
 		{"meeting", "meeting-request", true},
 		{"Talk", "talk-request", false},
@@ -20,7 +18,7 @@ func TestCheckRegexp(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if checkRegexp(test.arg, test.match) != test.result {
+		if checkRegexp(test.Regexp, test.Arg) != test.Exp {
 			t.Error("not Equal")
 		}
 	}
