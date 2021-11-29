@@ -58,7 +58,7 @@ func main() {
 }
 
 func getToken() (token string, err error) {
-	if os.Getenv("APP_ENV") != "production" {
+	if os.Getenv("APP_ENV") != "production" && os.Getenv("CI_ENV") != "TRUE" {
 		err := godotenv.Load()
 
 		if err != nil {

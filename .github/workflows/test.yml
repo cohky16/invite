@@ -16,3 +16,5 @@ jobs:
                 uses: actions/checkout@v2
             -   name: Run Test
                 run: go test .
+                env:
+                    CI_ENV: TRUE
