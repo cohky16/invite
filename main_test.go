@@ -22,7 +22,6 @@ func TestGetToken(t *testing.T) {
 		App   string
 		Token string
 	}{
-		{"production", "testToken1"},
 		{"dev", "testToken2"},
 		{"", "testToken3"},
 		{"aaaaaa", ""},
