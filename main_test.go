@@ -26,6 +26,7 @@ func TestGetToken(t *testing.T) {
 		{"dev", "testToken2"},
 		{"", "testToken3"},
 		{"aaaaaa", ""},
+		{"bbbbbbbb", ""},
 	}
 
 	for _, test := range tests {
