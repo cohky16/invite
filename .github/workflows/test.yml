@@ -21,4 +21,6 @@ jobs:
                 env:
                     CI_ENV: "TRUE"
             -   name: Upload coverage to Codecov
-                run: bash <(curl -s https://codecov.io/bash)
+                uses: codecov/codecov-action@v2
+                with:
+                    token: ${{ secrets.CODECOV_TOKEN }}
