@@ -17,4 +17,4 @@ jobs:
             -   name: Run Test
                 run: go test .
                 env:
-                    CI_ENV: TRUE
+                    CI_ENV: "TRUE"
