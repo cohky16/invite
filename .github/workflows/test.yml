@@ -14,10 +14,10 @@ jobs:
                     go-version: 1.17
             -   name: Checkout
                 uses: actions/checkout@v2
-            -   name: Run Test
-                run: go test -cover .
-                env:
-                    CI_ENV: "TRUE"
+            -   name: Run coverage
+                run: go test -race -coverprofile=coverage.txt -covermode=atomic
+            -   name: Upload coverage to Codecov
+                run: bash <(curl -s https://codecov.io/bash)
             -   name: upload coverage
                 uses: codecov/codecov-action@v1
                 with:
