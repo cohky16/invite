@@ -17,8 +17,10 @@ jobs:
                 with:
                     fetch-depth: 2
             -   name: Run coverage
-                run: go test -race -coverprofile=coverage.out -covermode=atomic
+                run: go test -race -coverprofile=coverage.xml -covermode=atomic
                 env:
                     CI_ENV: "TRUE"
             -   name: Upload coverage to Codecov
-                run: bash <(curl -s https://codecov.io/bash)
+                uses: codecov/codecov-action@v2
+                with:
+                    token: ${{ secrets.CODECOV_TOKEN }}
