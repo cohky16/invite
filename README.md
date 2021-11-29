@@ -1,3 +1,5 @@
+[![Test](https://github.com/cohky16/invite/actions/workflows/test.yml/badge.svg)](https://github.com/cohky16/invite/actions/workflows/test.yml)
+
 # 概要
 
 discordのボイスチャンネルへの招待を送信できます
