@@ -1,6 +1,6 @@
 [![Test](https://github.com/cohky16/invite/actions/workflows/test.yml/badge.svg)](https://github.com/cohky16/invite/actions/workflows/test.yml)
 
-[![codecov](https://codecov.io/gh/cohky16/invite/branch/master/graph/badge.svg)](https://codecov.io/gh/cohky16/invite)
+[![codecov](https://codecov.io/gh/cohky16/invite/branch/master/graph/badge.svg?token=OYMMVIM99T)](https://codecov.io/gh/cohky16/invite)
 
 # 概要
 
