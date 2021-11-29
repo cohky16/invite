@@ -15,11 +15,9 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v2
             -   name: Run coverage
-                run: go test -race -coverprofile=coverage.txt -covermode=atomic
+                run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
                 env:
                     CI_ENV: "TRUE"
-            -   name: Upload coverage to Codecov
-                run: bash <(curl -s https://codecov.io/bash)
             -   name: upload coverage
                 uses: codecov/codecov-action@v1
                 with:
