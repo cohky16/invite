@@ -15,9 +15,7 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v2
             -   name: Run coverage
-                run: go test -race -coverprofile=coverage.txt -covermode=atomic
-            -   name: Upload coverage to Codecov
-                run: bash <(curl -s https://codecov.io/bash)
+                run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
             -   name: upload coverage
                 uses: codecov/codecov-action@v1
                 with:
