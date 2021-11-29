@@ -15,6 +15,10 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v2
             -   name: Run Test
-                run: go test .
+                run: go test -cover .
                 env:
                     CI_ENV: "TRUE"
+            -   name: upload coverage
+                uses: codecov/codecov-action@v1
+                with:
+                    token: ${{ secrets.CODECOV_TOKEN }}
