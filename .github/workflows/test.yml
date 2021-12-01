@@ -21,4 +21,7 @@ jobs:
                 env:
                     CI_ENV: "TRUE"
             -   name: Upload coverage to Codecov
-                uses: codecov/codecov-action@v2
+                run: |
+                    curl -Os https://uploader.codecov.io/latest/linux/codecov
+                    chmod +x codecov
+                    ./codecov -f coverage.txt
