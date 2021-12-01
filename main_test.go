@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/bwmarrin/discordgo"
@@ -16,32 +17,32 @@ import (
 	"github.com/ewohltman/discordgo-mock/mockuser"
 )
 
-// func TestGetToken(t *testing.T) {
-// 	tests := []struct {
-// 		App   string
-// 		Token string
-// 	}{
-// 		{"production", "testToken1"},
-// 		{"dev", "testToken2"},
-// 		{"", "testToken3"},
-// 		{"aaaaaa", ""},
-// 		{"bbbbbbbb", ""},
-// 		{"", "cccccc"},
-// 		{"", ""},
-// 		{"eeeee", "eeee"},
-// 	}
+func TestGetToken(t *testing.T) {
+	tests := []struct {
+		App   string
+		Token string
+	}{
+		{"production", "testToken1"},
+		{"dev", "testToken2"},
+		{"", "testToken3"},
+		{"aaaaaa", ""},
+		{"bbbbbbbb", ""},
+		{"", "cccccc"},
+		{"", ""},
+		{"eeeee", "eeee"},
+	}
 
-// 	for _, test := range tests {
-// 		os.Setenv("APP_ENV", test.App)
-// 		os.Setenv("DISCORD_TOKEN", test.Token)
+	for _, test := range tests {
+		os.Setenv("APP_ENV", test.App)
+		os.Setenv("DISCORD_TOKEN", test.Token)
 
-// 		token, err := getToken()
+		token, err := getToken()
 
-// 		if err != nil || token != test.Token {
-// 			t.Error(err)
-// 		}
-// 	}
-// }
+		if err != nil || token != test.Token {
+			t.Error(err)
+		}
+	}
+}
 
 func TestNewDg(t *testing.T) {
 
