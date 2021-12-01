@@ -29,6 +29,7 @@ func TestGetToken(t *testing.T) {
 		{"bbbbbbbb", ""},
 		{"", "cccccc"},
 		{"", ""},
+		{"eeeee", "eeee"},
 	}
 
 	for _, test := range tests {
