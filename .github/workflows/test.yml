@@ -17,7 +17,7 @@ jobs:
                 with:
                     fetch-depth: 2
             -   name: Run coverage
-                run: go test -race -coverprofile=/invite/coverage.txt -covermode=atomic
+                run: go test -race -coverprofile=coverage.txt -covermode=atomic
                 env:
                     CI_ENV: "TRUE"
             -   name: Upload coverage to Codecov
