@@ -57,10 +57,12 @@ func (ms MockSession) GuildMembers(guildID string, after string, limit int) (st 
 }
 
 func (ms MockSession) Channel(channelID string) (st *discordgo.Channel, err error) {
+	channelName := channelID
+
 	channel := mockchannel.New(
 		mockchannel.WithID(mockconstants.TestChannel),
 		mockchannel.WithGuildID(mockconstants.TestGuild),
-		mockchannel.WithName(mockconstants.TestChannel),
+		mockchannel.WithName(channelName),
 		mockchannel.WithType(discordgo.ChannelTypeGuildVoice),
 	)
 

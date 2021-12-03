@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strconv"
+
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -13,9 +15,14 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		if err := onHelp(s, m); err != nil {
 			return
 		}
+	} else if checkRegexp("!invite \\d", m.Content) {
+		num := makeNumber(m.Content)
 
+		if err := onInvite(s, m, num); err != nil {
+			return
+		}
 	} else if checkRegexp("!invite", m.Content) {
-		if err := onInvite(s, m); err != nil {
+		if err := onInvite(s, m, 0); err != nil {
 			return
 		}
 	}
@@ -25,9 +32,13 @@ func onHelp(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
 	footer := discordgo.MessageEmbedFooter{Text: "🍎 ご要望、不具合は https://github.com/cohky16/invite までお願いします"}
 
 	embed := discordgo.MessageEmbed{
-		Title:       "機能概要",
-		Description: "ボイスチャンネルへの招待を送信できます\n\n**__各種コマンド__**\n\n**invite**\nユーザーにボイスチャンネルへの招待情報を送信します\n`!invite @hoge @fuga`\n\n**help**\nヘルプを表示します",
-		Footer:      &footer,
+		Title: "機能概要",
+		Description: "ボイスチャンネルへの招待を送信できます\n\n" +
+			"**__各種コマンド__**\n\n" +
+			"**invite**\nユーザーにボイスチャンネルへの招待情報を送信します\n`!invite @hoge @fuga`\n\n" +
+			"**invite $(RoomNo)**\nユーザーに特定のボイスチャンネルへの招待情報を送信します\n`!invite 1 @hoge @fuga`\n\n" +
+			"**help**\nヘルプを表示します",
+		Footer: &footer,
 	}
 
 	session := newSession(s, m)
@@ -37,7 +48,7 @@ func onHelp(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
 	return
 }
 
-func onInvite(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
+func onInvite(s *discordgo.Session, m *discordgo.MessageCreate, n int) (err error) {
 	session := newSession(s, m)
 
 	c, err := session.Channel(m.ChannelID)
@@ -47,53 +58,66 @@ func onInvite(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
 	}
 
 	if checkRegexp("talk", c.Name) {
-		if err = sendMessage(s, m, c, "Talk"); err != nil {
+		if err = sendMessage(s, m, c, "Talk", n); err != nil {
 			return
 		}
 	} else if checkRegexp("meeting", c.Name) {
-		if err = sendMessage(s, m, c, "Meeting"); err != nil {
+		if err = sendMessage(s, m, c, "Meeting", n); err != nil {
 			return
 		}
-	} else {
-		return
 	}
 
 	return
 }
 
-func sendMessage(s *discordgo.Session, m *discordgo.MessageCreate, c *discordgo.Channel, r string) error {
+func sendMessage(s *discordgo.Session, m *discordgo.MessageCreate, c *discordgo.Channel, r string, n int) (err error) {
 	users, err := makeUsers(s, m, c)
 
 	if err != nil {
-		return err
+		return
 	}
-
-	session := newSession(s, m)
 
 	for _, channel := range users.Channels {
-		count := 0
-
-		for _, alreadyChannelId := range users.AlreadyChannelIds {
-			if alreadyChannelId == channel.ID {
-				count++
-			}
-		}
-
-		if count < 2 && channel.Type == 2 && checkRegexp(r, channel.Name) {
-			st, err := session.ChannelInviteCreate(channel.ID, discordgo.Invite{})
-
-			if err != nil {
-				return err
-			}
-
-			ms, err := session.ChannelMessageSend(m.ChannelID, users.Users+"\nボイスチャンネルに招待されました\n"+"https://discord.gg/"+st.Code)
-
-			if err != nil || ms == nil {
-				return err
+		if n > 0 && channel.Type == 2 && checkRegexp(r+".*"+strconv.Itoa(n), channel.Name) {
+			if err = sendInvite(s, m, channel, users.Users); err != nil {
+				return
 			}
 			break
+		} else if n == 0 {
+			count := 0
+
+			for _, alreadyChannelID := range users.AlreadyChannelIds {
+				if alreadyChannelID == channel.ID {
+					count++
+				}
+			}
+
+			if count < 2 && channel.Type == 2 && checkRegexp(r, channel.Name) {
+				if err = sendInvite(s, m, channel, users.Users); err != nil {
+					return
+				}
+				break
+			}
 		}
 	}
 
-	return nil
+	return
+}
+
+func sendInvite(s *discordgo.Session, m *discordgo.MessageCreate, channel *discordgo.Channel, users string) (err error) {
+	session := newSession(s, m)
+
+	st, err := session.ChannelInviteCreate(channel.ID, discordgo.Invite{})
+
+	if err != nil {
+		return
+	}
+
+	ms, err := session.ChannelMessageSend(m.ChannelID, users+"\nボイスチャンネルに招待されました\n"+"https://discord.gg/"+st.Code)
+
+	if err != nil || ms == nil {
+		return
+	}
+
+	return
 }
