@@ -14,6 +14,12 @@ discordのボイスチャンネルへの招待を送信できます
 
 `!invite @hoge @fuga`
 
+### invite $(RoomNo)
+
+ユーザーに特定のボイスチャンネルへの招待情報を送信します
+
+`!invite 1 @hoge @fuga`
+
 ### help
 
 ヘルプを表示します
