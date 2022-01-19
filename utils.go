@@ -6,7 +6,7 @@ import (
 )
 
 func checkRegexp(reg, str string) bool {
-	return regexp.MustCompile("^" + reg + "(?s).*$").MatchString(str)
+	return regexp.MustCompile("^" + reg + "(?s).*$").Match([]byte(str))
 }
 
 func makeNumber(arg string) int {
