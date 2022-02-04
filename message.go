@@ -77,13 +77,20 @@ func sendMessage(s *discordgo.Session, m *discordgo.MessageCreate, c *discordgo.
 		return
 	}
 
+	state, _ := s.State.VoiceState(m.GuildID, m.Author.ID)
+
 	for _, channel := range users.Channels {
 		if n > 0 && channel.Type == 2 && checkRegexp(r+".*"+strconv.Itoa(n), channel.Name) {
 			if err = sendInvite(s, m, channel, users.Users); err != nil {
 				return
 			}
 			break
-		} else if n == 0 {
+		} else if n == 0 && state != nil && state.ChannelID == channel.ID {
+			if err = sendInvite(s, m, channel, users.Users); err != nil {
+				return
+			}
+			break
+		} else if n == 0 && state == nil {
 			count := 0
 
 			for _, alreadyChannelID := range users.AlreadyChannelIds {
