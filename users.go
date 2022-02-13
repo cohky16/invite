@@ -15,7 +15,7 @@ func makeUsers(s *discordgo.Session, m *discordgo.MessageCreate, c *discordgo.Ch
 		users.Users += user.Mention() + " "
 	}
 
-	session := newSession(s, m)
+	session := newSession(s, m.Author.Bot)
 
 	channels, err := session.GuildChannels(c.GuildID)
 
