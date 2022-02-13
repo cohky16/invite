@@ -22,8 +22,8 @@ func onHelpForCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		Title: "機能概要",
 		Description: "ボイスチャンネルへの招待を送信できます\n\n" +
 			"**__各種コマンド__**\n\n" +
-			"**invite**\nユーザーにボイスチャンネルへの招待情報を送信します\n`!invite @hoge @fuga`\n\n" +
-			"**invite $(RoomNo)**\nユーザーに特定のボイスチャンネルへの招待情報を送信します\n`!invite 1 @hoge @fuga`\n\n" +
+			"**invite**\nユーザーにボイスチャンネルへの招待情報を送信します\n`/invite to: @hoge @fuga`\n\n" +
+			"**invite $(RoomNo)**\nユーザーに特定のボイスチャンネルへの招待情報を送信します\n`/invite to: @hoge @fuga channel: Piyo`\n\n" +
 			"**help**\nヘルプを表示します",
 		Footer: &footer,
 	}

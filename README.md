@@ -14,13 +14,25 @@ discordのボイスチャンネルへの招待を送信できます
 
 - 招待者が既にボイスチャンネルに参加している場合は、招待者が参加しているボイスチャンネルへの招待情報を送信します
 
-`!invite @hoge @fuga`
+```shell
+# 通常コマンド
+!invite @hoge @fuga
+
+# スラッシュコマンド
+/invite to: @hoge @fuga
+```
 
 ### invite $(RoomNo)
 
 ユーザーに特定のボイスチャンネルへの招待情報を送信します
 
-`!invite 1 @hoge @fuga`
+```shell
+# 通常コマンド
+!invite 1 @hoge @fuga
+
+# スラッシュコマンド
+/invite to: @hoge @fuga channel: Piyo
+```
 
 ### help
 
