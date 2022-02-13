@@ -74,15 +74,6 @@ func (ms MockSession) ChannelInviteCreate(channelID string, i discordgo.Invite) 
 
 	return
 }
-
 func (ms MockSession) ChannelMessageSend(channelID string, content string) (*discordgo.Message, error) {
 	return nil, nil
-}
-
-func (ms MockSession) ApplicationCommandCreate(appID string, guildID string, cmd *discordgo.ApplicationCommand) (*discordgo.ApplicationCommand, error) {
-	return nil, nil
-}
-
-func (ms MockSession) InteractionRespond(*discordgo.Interaction, *discordgo.InteractionResponse) error {
-	return nil
 }
