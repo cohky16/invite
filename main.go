@@ -16,9 +16,10 @@ type Session interface {
 	GuildChannels(guildID string) (st []*discordgo.Channel, err error)
 	GuildMembers(guildID string, after string, limit int) (st []*discordgo.Member, err error)
 	Channel(channelID string) (st *discordgo.Channel, err error)
-
 	ChannelInviteCreate(channelID string, i discordgo.Invite) (st *discordgo.Invite, err error)
 	ChannelMessageSend(channelID string, content string) (*discordgo.Message, error)
+	ApplicationCommandCreate(appID string, guildID string, cmd *discordgo.ApplicationCommand) (*discordgo.ApplicationCommand, error)
+	InteractionRespond(*discordgo.Interaction, *discordgo.InteractionResponse) error
 }
 
 func main() {
@@ -83,6 +84,7 @@ func newDg(token string) (dg *discordgo.Session, err error) {
 
 func openDg(dg *discordgo.Session) (err error) {
 	dg.AddHandler(onMessageCreate)
+	dg.AddHandler(onCommand)
 
 	err = dg.Open()
 
@@ -93,8 +95,8 @@ func openDg(dg *discordgo.Session) (err error) {
 	return
 }
 
-func newSession(s *discordgo.Session, m *discordgo.MessageCreate) Session {
-	if m.Author.Bot {
+func newSession(s *discordgo.Session, bot bool) Session {
+	if bot {
 		var mockSession main_test.MockSession
 		return mockSession
 	}
