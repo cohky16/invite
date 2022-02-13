@@ -41,59 +41,15 @@ func onHelp(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
 		Footer: &footer,
 	}
 
-	if err = setCommand(s, m); err != nil {
-		return
-	}
+	session := newSession(s, m)
 
-	session := newSession(s, m.Author.Bot)
-
-	if _, err = session.ChannelMessageSendEmbed(m.ChannelID, &embed); err != nil {
-		return
-	}
-
-	return
-}
-
-func setCommand(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
-	session := newSession(s, m.Author.Bot)
-
-	_, err = session.ApplicationCommandCreate(
-		s.State.User.ID,
-		m.GuildID,
-		&discordgo.ApplicationCommand{
-			Name:        "help",
-			Description: "ヘルプを表示します",
-		},
-	)
-
-	_, err = session.ApplicationCommandCreate(
-		s.State.User.ID,
-		m.GuildID,
-		&discordgo.ApplicationCommand{
-			Name:        "invite",
-			Description: "ユーザーにボイスチャンネルへの招待情報を送信します",
-			Options: []*discordgo.ApplicationCommandOption{
-				{
-					Name:        "to",
-					Description: "招待したいユーザー名を入力します @hoge @fuga Tabでチャンネルの指定へ、Enterで確定します",
-					Type:        discordgo.ApplicationCommandOptionString,
-					Required:    true,
-				},
-				{
-					Name:        "channel",
-					Description: "招待したいチャンネルを指定します",
-					Type:        discordgo.ApplicationCommandOptionChannel,
-					Required:    false,
-				},
-			},
-		},
-	)
+	_, err = session.ChannelMessageSendEmbed(m.ChannelID, &embed)
 
 	return
 }
 
 func onInvite(s *discordgo.Session, m *discordgo.MessageCreate, n int) (err error) {
-	session := newSession(s, m.Author.Bot)
+	session := newSession(s, m)
 
 	c, err := session.Channel(m.ChannelID)
 
@@ -156,7 +112,7 @@ func sendMessage(s *discordgo.Session, m *discordgo.MessageCreate, c *discordgo.
 }
 
 func sendInvite(s *discordgo.Session, m *discordgo.MessageCreate, channel *discordgo.Channel, users string) (err error) {
-	session := newSession(s, m.Author.Bot)
+	session := newSession(s, m)
 
 	st, err := session.ChannelInviteCreate(channel.ID, discordgo.Invite{})
 
