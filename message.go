@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/bwmarrin/discordgo"
@@ -41,13 +42,15 @@ func onHelp(s *discordgo.Session, m *discordgo.MessageCreate) (err error) {
 		Footer: &footer,
 	}
 
-	if err = setCommand(s, m); err != nil {
-		return
-	}
-
 	session := newSession(s, m.Author.Bot)
 
 	if _, err = session.ChannelMessageSendEmbed(m.ChannelID, &embed); err != nil {
+		return
+	}
+
+	if err = setCommand(s, m); err != nil {
+		fmt.Println(s.State.User)
+		fmt.Println(err)
 		return
 	}
 
