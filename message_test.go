@@ -34,6 +34,22 @@ func TestOnHelp(t *testing.T) {
 	}
 }
 
+func TestSetCommand(t *testing.T) {
+	s, err := mockDg()
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	m := &discordgo.MessageCreate{&discordgo.Message{Author: s.State.User}}
+
+	err = setCommand(s, m)
+
+	if err != nil {
+		t.Error(err)
+	}
+}
+
 func TestOnInvite(t *testing.T) {
 	s, err := mockDg()
 
