@@ -68,8 +68,6 @@ func TestOnInvite(t *testing.T) {
 		{"talk", 0},
 		{"meeting", 0},
 		{"other", 1},
-		{"other", 1},
-		{"other", 0},
 		{"other", 0},
 	}
 
