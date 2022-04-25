@@ -9,3 +9,4 @@ invite
 .terraform
 *.tfstate
 *.tfstate.*
+*.tfvars
