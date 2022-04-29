@@ -7,6 +7,10 @@ terraform {
 
   cloud {
     organization = "cohky"
+
+    workspaces {
+      name = "invite"
+    }
   }
 }
 
