@@ -1,2 +1,12 @@
+# env
 .env
+.env.prod
+
+# app
 invite
+
+# Terraform
+.terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
