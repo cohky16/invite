@@ -4,7 +4,7 @@ terraform {
       source = "heroku/heroku"
     }
   }
-  
+
   cloud {
     organization = "cohky"
   }
