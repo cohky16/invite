@@ -6,6 +6,10 @@ terraform {
   }
 }
 
+cloud {
+  organization = "cohky"
+}
+
 provider "heroku" {}
 
 variable "APP_ENV" {}
