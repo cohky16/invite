@@ -4,11 +4,12 @@ terraform {
       source = "heroku/heroku"
     }
   }
+  
+  cloud {
+    organization = "cohky"
+  }
 }
 
-cloud {
-  organization = "cohky"
-}
 
 provider "heroku" {}
 
