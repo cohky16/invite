@@ -20,20 +20,23 @@ import (
 func TestGetToken(t *testing.T) {
 	tests := []struct {
 		App   string
+		Ci    string
 		Token string
 	}{
-		{"production", "testToken1"},
-		{"dev", "testToken2"},
-		{"", "testToken3"},
-		{"aaaaaa", ""},
-		{"bbbbbbbb", ""},
-		{"", "cccccc"},
-		{"", ""},
-		{"eeeee", "eeee"},
+		{"production", "FALSE", "testToken1"},
+		{"production", "TRUE", "testToken1"},
+		{"dev", "FALSE", "testToken2"},
+		{"", "TRUE", "testToken3"},
+		{"aaaaaa", "FALSE", ""},
+		{"bbbbbbbb", "FALSE", ""},
+		{"", "FALSE", "cccccc"},
+		{"", "FALSE", ""},
+		{"eeeee", "FALSE", "eeee"},
 	}
 
 	for _, test := range tests {
 		os.Setenv("APP_ENV", test.App)
+		os.Setenv("CI_ENV", test.Ci)
 		os.Setenv("DISCORD_TOKEN", test.Token)
 
 		token, err := getToken()
