@@ -1,4 +1,4 @@
-[![Test](https://github.com/cohky16/invite/actions/workflows/test.yml/badge.svg)](https://github.com/cohky16/invite/actions/workflows/test.yml)
+[![Test](https://github.com/cohky16/invite/actions/workflows/cicd.yml/badge.svg)](https://github.com/cohky16/invite/actions/workflows/cicd.yml)
 
 # 概要
 
