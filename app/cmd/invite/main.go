@@ -1,7 +1,7 @@
 package main
 
 import (
-	main_test "invite/mock"
+	main_internal "invite/internal"
 	"log"
 	"os"
 	"os/signal"
@@ -60,7 +60,7 @@ func main() {
 
 func getToken() (token string, err error) {
 	if os.Getenv("APP_ENV") != "production" && os.Getenv("CI_ENV") != "TRUE" {
-		err := godotenv.Load()
+		err := godotenv.Load("../../../.env")
 
 		if err != nil {
 			return "", err
@@ -97,7 +97,7 @@ func openDg(dg *discordgo.Session) (err error) {
 
 func newSession(s *discordgo.Session, bot bool) Session {
 	if bot {
-		var mockSession main_test.MockSession
+		var mockSession main_internal.MockSession
 		return mockSession
 	}
 	return s

@@ -1,4 +1,4 @@
-package main_test
+package main_internal
 
 import (
 	"github.com/bwmarrin/discordgo"
