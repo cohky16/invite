@@ -19,7 +19,7 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v2
             -   name: Run coverage
-                run: go test ./cmd -race -coverprofile=coverage.txt -covermode=atomic
+                run: touch .env && go test ./cmd -race -coverprofile=coverage.txt -covermode=atomic
                 env:
                     CI_ENV: "TRUE"
             -   name: Upload coverage to Codecov
