@@ -40,7 +40,7 @@ resource "heroku_app" "invite-ydkk" {
 resource "heroku_build" "invite-ydkk" {
   app_id = heroku_app.invite-ydkk.id
   source {
-    path = "./cmd"
+    path = "./app"
   }
 }
 
